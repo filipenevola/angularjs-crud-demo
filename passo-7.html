@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>AngularJS Demo</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+
+    <link rel="stylesheet" href="css/app.css"/>
+
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        var produtosJson = '[ {"nome": "Coca-Cola", "preco": 3}, ' +
+                '{"nome": "Pepsi", "preco": 2.5}, ' +
+                '{"nome": "Arroz", "preco": 15}, ' +
+                '{"nome": "Feijão", "preco": 8} ]';
+        function DemoCtrl($scope) {
+            $scope.produtos = eval(produtosJson);
+
+            $scope.remover = function(produto) {
+                var index = $scope.produtos.indexOf(produto);
+                if (index != -1) {
+                    $scope.produtos.splice(index, 1);
+                }
+            }
+        }
+    </script>
+</head>
+<body style="margin: 15px;" ng-controller="DemoCtrl">
+<h1>Meus Produtos</h1>
+<strong>Busca:</strong> <input ng-model="textoBusca" class="input-lg">
+<table class="table table-bordered table-responsive">
+    <tr>
+        <th><a href="" ng-click="predicate = 'nome'; reverse=false">Nome</a>
+            (<a href="" ng-click="predicate = '-nome'; reverse=false">^</a>)</th>
+        <th><a href="" ng-click="predicate = 'preco'; reverse=!reverse">Preço</a></th>
+        <th>Ações</th>
+    </tr>
+    <tr ng-repeat="produto in produtos | filter:textoBusca | orderBy:predicate:reverse">
+        <td>{{produto.nome}}</td>
+        <td>{{produto.preco | currency:"R$ "}}</td>
+        <td><button ng-click="remover(produto)" class="btn btn-default"><i class="glyphicon glyphicon-trash"></i> remover</button></td>
+    </tr>
+</table>
+
+</body>
+</html>
